@@ -27,21 +27,38 @@ $("#submitButton").on("click", function(e) {
     console.log("trainName....",trainName);
 })
 
-var newTrain = firebase.database().ref().on("child_added", function(childSnapshot) {
+firebase.database().ref().on("child_added", function(childSnapshot) {
   var trainNameToAdd = childSnapshot.val().TrainName;
+  var destinationToAdd = childSnapshot.val().Destination;
+  var frequencyToAdd = childSnapshot.val().Frequency;
+//   var nextArrivalToAdd = childSnapshot.val().NextTrainTime;
 
-  addRow(trainNameToAdd);
+
+  addRow(trainNameToAdd,destinationToAdd,frequencyToAdd);
 });
 
-// function writeRowToPage() {
-  function addRow(name) {
+// Write table data from Firebase
+  function addRow(newName,newDestination,newFrequency) {
       var newRow = $("<tr>")
       $("#table-body").append(newRow);
-
+      // Add Train Name to page
       var trainName = $("<td>");
       trainName.attr("class","trainName");
       $(newRow).append(trainName);
-      $(trainName).text(name);
+      $(trainName).text(newName);
+      // Add Destination to page
+      var destination = $("<td>");
+      destination.attr("class","destination");
+      $(newRow).append(destination);
+      $(destination).text(newDestination);
+      // Add Frequency to page
+      var frequency = $("<td>");
+      frequency.attr("class","frequency");
+      $(newRow).append(frequency);
+      $(frequency).text(newFrequency);
+      // Add NextArrival
+      
+
   }
 
 
@@ -81,8 +98,8 @@ console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
 
 
-
-
-// **** FUNCTIONS TO ADD ****
-// function addRow()
+// **** NEW SHIT ****
+function calculateNextArrival (firstTrainTime,frequency) {
+    
+}
 
