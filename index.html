@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Train Scheduler</title>
+    <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase-database.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -98,5 +100,17 @@
             </div>
         </div>
     </div>
+    <script>
+            // Initialize Firebase
+            var config = {
+              apiKey: "AIzaSyDAERu2OhTJmiBgZIAnXk7lHWAaSAY28Zk",
+              authDomain: "trainscheduler-1c731.firebaseapp.com",
+              databaseURL: "https://trainscheduler-1c731.firebaseio.com",
+              projectId: "trainscheduler-1c731",
+              storageBucket: "trainscheduler-1c731.appspot.com",
+              messagingSenderId: "130724070717"
+            };
+            firebase.initializeApp(config);
+          </script>          
 </body>
 </html>
