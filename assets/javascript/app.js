@@ -12,45 +12,41 @@ var config = {
 };
 firebase.initializeApp(config);
 
-$("#submit-button").on("click", function(e) {
+$("#submitButton").on("click", function(e) {
     e.preventDefault();
-    var name = $("#employee-name").val();
-    var role = $("#role").val();
-    var startDate = $("#start-date").val();
-    var monthlyRate = $("#monthly-rate").val();
-  //   console.log(name);
+    var trainName = $("#trainNameInput").val();
+    var destination = $("#destinationInput").val();
+    var firstTrainTime = $("#firstTrainTimeInput").val();
+    var frequency = $("#frequencyInput").val();
     firebase.database().ref().push({
-      Name: name,
-      Role: role,
-      StartDate : startDate,
-      // MonthsWorked: monthsWorked,
-      MonthlyRate: monthlyRate,
-      // TotalBilled: totalBilled
+      TrainName: trainName,
+      Destination: destination,
+      FirstTrainTime : firstTrainTime,
+      Frequency: frequency,
     });
+    console.log("trainName....",trainName);
 })
 
-var newName = firebase.database().ref().on("child_added", function(childSnapshot) {
-  var nameToAdd = childSnapshot.val().Name;
-  console.log(nameToAdd);
-  addName((nameToAdd));
+var newTrain = firebase.database().ref().on("child_added", function(childSnapshot) {
+  var trainNameToAdd = childSnapshot.val().TrainName;
+
+  addRow(trainNameToAdd);
 });
-// console.log(newRecord);
 
 // function writeRowToPage() {
-  function addName(name) {
+  function addRow(name) {
       var newRow = $("<tr>")
       $("#table-body").append(newRow);
-      var newName = $("<td>");
-      newName.attr("class","name");
-      // var counter = 0;
-      // newName.attr("id",parseInt(counter)+1);
-      $(newRow).append(newName);
-      $(newName).text(name);
+
+      var trainName = $("<td>");
+      trainName.attr("class","trainName");
+      $(newRow).append(trainName);
+      $(trainName).text(name);
   }
 
 
 
-  
+
 // **** MOMENT JS CODE ********
 // Assumptions
 var tFrequency = 17;

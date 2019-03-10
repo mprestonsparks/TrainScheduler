@@ -44,7 +44,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="table-body">
                         <tr>
                             <td>
                                 Trenton Express
@@ -91,26 +91,16 @@
                         <label for="exampleInputPassword1">
                             Frequency
                         </label>
-                        <input type="number" class="form-control" id="frequncyInput" />
+                        <input type="number" class="form-control" id="frequencyInput" />
                     </div>     
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" id= "submitButton" class="btn btn-primary">
                         Submit
                     </button>
                 </form>
             </div>
         </div>
     </div>
-    <script>
-            // Initialize Firebase
-            var config = {
-              apiKey: "AIzaSyDAERu2OhTJmiBgZIAnXk7lHWAaSAY28Zk",
-              authDomain: "trainscheduler-1c731.firebaseapp.com",
-              databaseURL: "https://trainscheduler-1c731.firebaseio.com",
-              projectId: "trainscheduler-1c731",
-              storageBucket: "trainscheduler-1c731.appspot.com",
-              messagingSenderId: "130724070717"
-            };
-            firebase.initializeApp(config);
-          </script>          
+    <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
+    <script src="assets/javascript/app.js"></script>
 </body>
 </html>
