@@ -18,11 +18,18 @@ $("#submitButton").on("click", function(e) {
     var destination = $("#destinationInput").val();
     var firstTrainTime = $("#firstTrainTimeInput").val();
     var frequency = $("#frequencyInput").val();
+    var nextArrival = calculateNextArrival(firstTrainTime,frequency);
+    // var diffTime = calculateMinutesAway(firstTrainTime);
+    var minutesAway = testcalcMinutesAway(frequency,firstTrainTime);
     firebase.database().ref().push({
       TrainName: trainName,
       Destination: destination,
       FirstTrainTime : firstTrainTime,
       Frequency: frequency,
+      NextArrival: nextArrival,
+      MinutesAway: minutesAway
+    //   DiffTime: diffTime
+
     });
     console.log("trainName....",trainName);
 })
@@ -31,14 +38,17 @@ firebase.database().ref().on("child_added", function(childSnapshot) {
   var trainNameToAdd = childSnapshot.val().TrainName;
   var destinationToAdd = childSnapshot.val().Destination;
   var frequencyToAdd = childSnapshot.val().Frequency;
+  var firstTrainTimeToAdd = childSnapshot.val().FirstTrainTime;
+  var nextArrivalToAdd = childSnapshot.val().NextArrival;
 //   var nextArrivalToAdd = childSnapshot.val().NextTrainTime;
+    var minutesAwayToAdd = childSnapshot.val().MinuteAway;
 
 
-  addRow(trainNameToAdd,destinationToAdd,frequencyToAdd);
+  addRow(trainNameToAdd,destinationToAdd,frequencyToAdd,nextArrivalToAdd);
 });
 
 // Write table data from Firebase
-  function addRow(newName,newDestination,newFrequency) {
+  function addRow(newName,newDestination,newFrequency,newNextArrival) {
       var newRow = $("<tr>")
       $("#table-body").append(newRow);
       // Add Train Name to page
@@ -57,6 +67,10 @@ firebase.database().ref().on("child_added", function(childSnapshot) {
       $(newRow).append(frequency);
       $(frequency).text(newFrequency);
       // Add NextArrival
+      var nextArrival = $("<td>");
+      nextArrival.attr("class","nextArrival");
+      $(newRow).append(nextArrival);
+      $(nextArrival).text(newNextArrival);
       
 
   }
@@ -66,40 +80,66 @@ firebase.database().ref().on("child_added", function(childSnapshot) {
 
 // **** MOMENT JS CODE ********
 // Assumptions
-var tFrequency = 17;
+function testcalcMinutesAway(frequency,firstTime){
 
-// Time is 3:30 AM
-var firstTime = "03:00";
+    var tFrequency = parseInt(frequency);
 
-// First Time (pushed back 1 year to make sure it comes before current time)
-var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
-console.log("firstTime...",firstTimeConverted);
+    // Time is 3:30 AM
+    // var firstTime = "03:30";
 
-// Current Time
-var nextTime = "19:12";
-var currentTime = moment(nextTime,"HH:mm");
-console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+    // First Time (pushed back 1 year to make sure it comes before current time)
+    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+    console.log(firstTimeConverted);
 
-// Difference between the times
-var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-console.log("DIFFERENCE IN TIME: " + diffTime);
+    // Current Time
+    var currentTime = moment();
+    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
 
-// Time apart (remainder)
-var tRemainder = diffTime % tFrequency;
-console.log(tRemainder);
+    // Difference between the times
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    console.log("DIFFERENCE IN TIME: " + diffTime);
 
-// Minute Until Train
-var tMinutesTillTrain = tFrequency - tRemainder;
-console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+    // Time apart (remainder)
+    var tRemainder = diffTime % tFrequency;
+    console.log(tRemainder);
 
-// Next Train
-var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+    // Minute Until Train
+    var tMinutesTillTrain = tFrequency - tRemainder;
+    console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
+    return tMinutesTillTrain;
+
+    // Next Train
+    // var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+    // console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+
+}
+
+testcalcMinutesAway();
+
+
+
+
+
+// // Next Train
+// var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+// console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
 
 
 // **** NEW SHIT ****
 function calculateNextArrival (firstTrainTime,frequency) {
-    
+    var firstTimeConverted = moment(firstTrainTime, "HH:mm").subtract(1, "years");
+    var nextTime = firstTimeConverted.add(frequency,"m");
+    var nextTimeConverted = moment(nextTime, "HH:mm");
+    return nextTimeConverted.format("HH:mm A"); // ****** DOESN'T CONVER FROM 24-HR to AM/PM, DOCS SAID ADD a OR p AT END OF STRING
+    // http://momentjs.com/docs/#/parsing/string-format/
 }
+
+// function calculateMinutesAway(firstTime) {
+//     // var currentTime = moment();
+//     var diffTime = moment().diff(moment(firstTime), "minutes");
+//     return diffTime;
+
+// }
 
