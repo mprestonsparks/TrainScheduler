@@ -11,7 +11,7 @@ var config = {
 };
 firebase.initializeApp(config);
 
-// Explain
+// Push form data to Firebase on click of Submit button
 $("#submitButton").on("click", function(e) {
     e.preventDefault();
     var trainName = $("#trainNameInput").val();
@@ -30,7 +30,7 @@ $("#submitButton").on("click", function(e) {
       });
 })
 
-// Explain
+// When new data added to Firebase, add new row to table on page
 firebase.database().ref().on("child_added", function(childSnapshot) {
   var trainNameToAdd = childSnapshot.val().TrainName;
   var destinationToAdd = childSnapshot.val().Destination;
@@ -41,7 +41,8 @@ firebase.database().ref().on("child_added", function(childSnapshot) {
 });
 
 
-// **** MOMENT JS CODE ********
+// **** FUNCTIONS ****
+// Functin to calculate minutes until next train arrives
 function testcalcMinutesAway(frequency,firstTime){
     var tFrequency = parseInt(frequency);
     // First Time (pushed back 1 year to make sure it comes before current time)
@@ -57,8 +58,6 @@ function testcalcMinutesAway(frequency,firstTime){
     return tMinutesTillTrain;
 }
 
-
-// **** FUNCTIONS ****
 // Write table data from Firebase
 function addRow(newName,newDestination,newFrequency,newNextArrival,newMinutesAway) {
   var newRow = $("<tr>")
@@ -90,12 +89,12 @@ function addRow(newName,newDestination,newFrequency,newNextArrival,newMinutesAwa
   $(minutesAway).text(newMinutesAway);
 }
 
-// Explain
+// Function to calculate the arrival time of next train
 function calculateNextArrival (firstTrainTime,frequency) {
-    var firstTimeConverted = moment(firstTrainTime, "HH:mm").subtract(1, "years");
+    var firstTimeConverted = moment(firstTrainTime, "hh:mm").subtract(1, "years");
     var nextTime = firstTimeConverted.add(frequency,"m");
-    var nextTimeConverted = moment(nextTime, "HH:mm");
-    return nextTimeConverted.format("HH:mm A");
+    var nextTimeConverted = moment(nextTime, "hh:mm");
+    return nextTimeConverted.format("hh:mm A");
 }
 
 
