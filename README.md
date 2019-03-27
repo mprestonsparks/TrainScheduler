@@ -13,7 +13,7 @@
 
 
 **Technology Used** </br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HTML, CSS, JavaScript, jQuery, Firebase, moment.JS </br>
+&nbsp; HTML, CSS, JavaScript, jQuery, Firebase, moment.JS </br>
 
 
 [TrainScheduler]: <https://mprestonsparks.github.io/TrainScheduler/>
